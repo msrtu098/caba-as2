@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alojamientos - Cabañas Los Nietos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2d3436;
+            background: #f8f9fa;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #2d5016 0%, #4a7c2c 100%);
+            color: white;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        h1 {
+            color: #2d5016;
+            margin-bottom: 3rem;
+            text-align: center;
+            font-size: 2.5rem;
+        }
+
+        /* Departamento Item */
+        .departamento {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .departamento:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .departamento h2 {
+            color: #2d5016;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            border-bottom: 3px solid #4a7c2c;
+            padding-bottom: 0.5rem;
+        }
+
+        .info-list {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-list li {
+            padding: 0.6rem 0;
+            color: #636e72;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-list li::before {
+            content: "✓";
+            color: #4a7c2c;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .btn-ver-imagenes {
+            background: #4a7c2c;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            width: 100%;
+            max-width: 300px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .btn-ver-imagenes:hover {
+            background: #5a8c3c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(74, 124, 44, 0.3);
+        }
+
+        /* Modal Galería (estilo pantalla completa) */
+        .gallery-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .gallery-modal.active {
+            display: block;
+        }
+
+        .gallery-header {
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            z-index: 10;
+        }
+
+        .gallery-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .close-gallery {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-gallery:hover {
+            background: white;
+            color: #000;
+            transform: rotate(90deg);
+        }
+
+        .gallery-container {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery-grid-full {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-item-full {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: zoom-in;
+            transition: transform 0.3s;
+        }
+
+        .gallery-item-full:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .gallery-item-full img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .image-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: 1rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* Lightbox para imagen individual */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+            animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2001;
+        }
+
+        .lightbox-close:hover {
+            background: #e74c3c;
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .gallery-grid-full {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-item-full img {
+                height: 300px;
+            }
+
+            .gallery-container {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            .departamento {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1200px) {
+            .gallery-grid-full {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1201px) {
+            .gallery-grid-full {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo"> Cabañas Los Nietos</a>
+            <a href="index.html" class="back-btn">← Volver</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Nuestros Departamentos</h1>
+
+        <!-- Departamento 1 -->
+        <div class="departamento">
+            <h2>Departamento 1</h2>
+            <ul class="info-list">
+                <li>Capacidad: Hasta 5 personas</li>
+                <li>1 habitación con cama matrimonial</li>
+                <li>Cama individual y cama marinera en cocina-comedor</li>
+                <li>Baño con ducha y antebaño</li>
+                <li>Cocina con horno</li>
+                <li>TV con videocable</li>
+                <li>Patio con fogón y parrilla</li>
+            </ul>
+            <button class="btn-ver-imagenes" onclick="openGallery('gallery1')"> Ver Imágenes</button>
+        </div>
+
+        <!-- Departamento 2 -->
+        <div class="departamento">
+            <h2>Departamento 2</h2>
+            <ul class="info-list">
+                <li>Capacidad: Hasta 5 personas</li>
+                <li>1 habitación con cama matrimonial</li>
+                <li>Cama individual y cama marinera en cocina-comedor</li>
+                <li>Baño completo</li>
+                <li>Cocina equipada con horno</li>
+                <li>TV con videocable</li>
+                <li>Calefacción</li>
+            </ul>
+            <button class="btn-ver-imagenes" onclick="openGallery('gallery2')"> Ver Imágenes</button>
+        </div>
+
+        <!-- Departamento 3 -->
+        <div class="departamento">
+            <h2>Departamento 3</h2>
+            <ul class="info-list">
+                <li>Capacidad: Hasta 4 personas</li>
+                <li>1 habitación con cama matrimonial</li>
+                <li>Cama individual en cocina-comedor</li>
+                <li>Baño completo</li>
+                <li>Cocina equipada</li>
+                <li>TV con videocable</li>
+                <li>Calefacción</li>
+            </ul>
+            <button class="btn-ver-imagenes" onclick="openGallery('gallery3')"> Ver Imágenes</button>
+        </div>
+    </div>
+
+    <!-- Galería Departamento 1 -->
+    <div id="gallery1" class="gallery-modal">
+        <div class="gallery-header">
+            <h2 class="gallery-title">Departamento 1 - Galería de Fotos</h2>
+            <button class="close-gallery" onclick="closeGallery('gallery1')">×</button>
+        </div>
+        <div class="gallery-container">
+            <div class="gallery-grid-full">
+                <!-- Agrega aquí las imágenes del departamento 1 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Galería Departamento 2 -->
+    <div id="gallery2" class="gallery-modal">
+        <div class="gallery-header">
+            <h2 class="gallery-title">Departamento 2 - Galería de Fotos</h2>
+            <button class="close-gallery" onclick="closeGallery('gallery2')">×</button>
+        </div>
+        <div class="gallery-container">
+            <div class="gallery-grid-full">
+                <div class="gallery-item-full" onclick="openLightbox('https://i.imgur.com/rRq30Ga.jpeg')">
+                    <img src="https://i.imgur.com/rRq30Ga.jpeg" alt="Exterior">
+                    
+                </div>
+                <div class="gallery-item-full" onclick="openLightbox('https://i.imgur.com/2zOAh8d.jpeg')">
+                    <img src="https://i.imgur.com/2zOAh8d.jpeg" alt="Cocina-comedor">
+                    
+                </div>
+                <div class="gallery-item-full" onclick="openLightbox('https://i.imgur.com/L4VnDqu.jpeg')">
+                    <img src="https://i.imgur.com/L4VnDqu.jpeg" alt="Cocina">
+                    <div class="image-caption">Cocina</div>
+                </div>
+                <div class="gallery-item-full" onclick="openLightbox('https://i.imgur.com/hsH6GgV.jpeg')">
+                    <img src="https://i.imgur.com/hsH6GgV.jpeg" alt="Baño">
+                    
+                </div>
+                <div class="gallery-item-full" onclick="openLightbox('https://i.imgur.com/9v12QBX.jpeg')">
+                    <img src="https://i.imgur.com/9v12QBX.jpeg" alt="Cocina-comedor">
+                    
+                </div>
+                <div class="gallery-item-full" onclick="openLightbox('https://i.imgur.com/xDZmmj6.jpeg')">
+                    <img src="https://i.imgur.com/xDZmmj6.jpeg" alt="Entrada">
+                    
+                </div>
+                <div class="gallery-item-full" onclick="openLightbox('https://i.imgur.com/f203KSJ.jpeg')">
+                    <img src="https://i.imgur.com/f203KSJ.jpeg" alt="Detalle">
+                    
+                </div>
+                <div class="gallery-item-full" onclick="openLightbox('https://i.imgur.com/w0ZcNAF.jpeg')">
+                    <img src="https://i.imgur.com/w0ZcNAF.jpeg" alt="Vista">
+                    
+                </div>
+                <div class="gallery-item-full" onclick="openLightbox('https://i.imgur.com/A1J8zZ2.jpeg')">
+                    <img src="https://i.imgur.com/A1J8zZ2.jpeg" alt="Ambiente">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Galería Departamento 3 -->
+    <div id="gallery3" class="gallery-modal">
+        <div class="gallery-header">
+            <h2 class="gallery-title">Departamento 3 - Galería de Fotos</h2>
+            <button class="close-gallery" onclick="closeGallery('gallery3')">×</button>
+        </div>
+        <div class="gallery-container">
+            <div class="gallery-grid-full">
+                <div class="gallery-item-full" onclick="openLightbox('https://i.imgur.com/qY27oHV.jpeg')">
+                    <img src="https://i.imgur.com/qY27oHV.jpeg" alt="Living">
+                    
+                </div>
+                <div class="gallery-item-full" onclick="openLightbox('https://i.imgur.com/aBcUJaz.jpeg')">
+                    <img src="https://i.imgur.com/aBcUJaz.jpeg" alt="Exterior">
+                    
+                </div>
+                <div class="gallery-item-full" onclick="openLightbox('https://i.imgur.com/r9cWvGK.jpeg')">
+                    <img src="https://i.imgur.com/r9cWvGK.jpeg" alt="Cocina-comedor">
+                    
+                </div>
+                <div class="gallery-item-full" onclick="openLightbox('https://i.imgur.com/8jgSrOg.jpeg')">
+                    <img src="https://i.imgur.com/8jgSrOg.jpeg" alt="Cocina">
+                    
+                </div>
+                <div class="gallery-item-full" onclick="openLightbox('https://i.imgur.com/iOGpWDL.jpeg')">
+                    <img src="https://i.imgur.com/iOGpWDL.jpeg" alt="Baño">
+                    
+                </div>
+                <div class="gallery-item-full" onclick="openLightbox('https://i.imgur.com/419WPD7.jpeg')">
+                    <img src="https://i.imgur.com/419WPD7.jpeg" alt="Vista">
+                    
+                </div>
+                <div class="gallery-item-full" onclick="openLightbox('https://i.imgur.com/Mv20wsp.jpeg')">
+                    <img src="https://i.imgur.com/Mv20wsp.jpeg" alt="Entrada">
+                    
+                </div>
+                <div class="gallery-item-full" onclick="openLightbox('https://i.imgur.com/gpkiVM1.jpeg')">
+                    <img src="https://i.imgur.com/gpkiVM1.jpeg" alt="Detalle">
+                    
+                </div>
+                <div class="gallery-item-full" onclick="openLightbox('https://i.imgur.com/ykw5slr.jpeg')">
+                    <img src="https://i.imgur.com/ykw5slr.jpeg" alt="Ambiente">
+                    
+                </div>
+                <div class="gallery-item-full" onclick="openLightbox('https://i.imgur.com/t7kfDiv.jpeg')">
+                    <img src="https://i.imgur.com/t7kfDiv.jpeg" alt="Vista">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox para imagen individual -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close" onclick="closeLightbox()">×</button>
+        <img id="lightbox-img" src="" alt="Imagen ampliada" class="lightbox-content">
+    </div>
+
+    <script>
+        function openGallery(galleryId) {
+            document.getElementById(galleryId).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeGallery(galleryId) {
+            document.getElementById(galleryId).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Abrir lightbox con imagen individual
+        function openLightbox(imageSrc) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = imageSrc;
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        // Cerrar galería con tecla ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                // Cerrar galerías
+                document.querySelectorAll('.gallery-modal.active').forEach(modal => {
+                    modal.classList.remove('active');
+                });
+                document.body.style.overflow = 'auto';
+                
+                // Cerrar lightbox
+                closeLightbox();
+            }
+        });
+    </script>
+</body>
+</html>

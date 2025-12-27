@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ubicación - Cabañas Los Nietos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2d3436;
+            background: #f8f9fa;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #2d5016 0%, #4a7c2c 100%);
+            color: white;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        h1 {
+            color: #2d5016;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 2rem;
+        }
+
+        .ubicacion-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .direccion {
+            background: #e8f5e3;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .direccion h1 {
+            color: #2d5016;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .direccion p {
+            color: #4a7c2c;
+            font-size: 1.2rem;
+            margin: 0.5rem 0;
+        }
+
+        .direccion-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .mapa-container {
+            width: 100%;
+            height: 450px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .mapa-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+     
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .mapa-container {
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">🏡 Cabañas Los Nietos</a>
+            <a href="index.html" class="back-btn">← Volver</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Nuestra Ubicación</h1>
+
+        <div class="ubicacion-card">
+            <div class="direccion">
+                
+                <h1>Dirección</h1>
+                <p><strong>Zenone 70</strong></p>
+                <p>Tolhuin, Tierra del Fuego</p>
+                <p>Argentina</p>
+            </div>
+
+            <div class="mapa-container">
+                
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2316.088581142548!2d-67.19613022372191!3d-54.51429915860386!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xbc4bc345660f22fd%3A0x3bdb355c0880ea21!2zQ0FCQcORQSAiTE9TIE5JRVRPUyI!5e0!3m2!1ses-419!2sar!4v1766365898942!5m2!1ses-419!2sar" width="600" height="450" style="border:0;"
+                 allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+
+       
+        </div>
+    </div>
+</body>
+</html>
